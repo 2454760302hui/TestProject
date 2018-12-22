@@ -1,0 +1,60 @@
+Q:创建本地分支，并上传到远程
+
+1.git branch 查看本地分支
+
+2. git checkout -b test1
+
+3.git push --set-upstream origin test1
+——————————————————————————————————
+
+Q：上传文件到远程
+1.git init
+2.git add .
+3.git commit -m ""
+4.git remote add origin +远程库地址
+5.git pull --rebase origin master （远程与本地合并）
+6.git push -u origin master
+
+————————————————————————————————————————
+
+Q：删除远程文件
+1.ls 查看
+2.git rm 删除文件
+3.git add .
+4.git commit -m ""
+5.git push
+
+————————————————————————————————————————————
+Q:新建远程分支
+1.git checkout -b 01
+2.git add .
+3.git commit -m ""
+4.git push --set-upstream origin 01
+
+Q:删除远程分支
+
+1.git push origin --delete br3  可以删除远程分支br3
+
+2.查看本地分支 git branch
+
+3.查看远程分支 git branch -a
+
+Q:删除本地分支
+
+1.git branch -d br3  可以删除本地分支br3
+————————————————————————————————————————————
+Q：往分支提交代码
+1.git checkout new
+
+2.git add .
+
+3.git commit -m "add files"
+
+4.git push
+
+__________________________________________________________________________________________________________
+
+Q:查看远程分支列表
+git ls-remote
+
+——————————————————————————————————————————————
