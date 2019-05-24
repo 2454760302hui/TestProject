@@ -1,0 +1,104 @@
+【https://docs.djangoproject.com/en/2.2/ref/templates/builtins/】django官网
+1.pip install virtualenv   安装virtualenv
+
+2.virtualenv testair  创建testair目录
+
+3.cd Scripts目录下-activate.bat  进入虚拟环境 
+
+4.deactivate.bat   退出虚拟环境
+
+5.建议使用 pip install virtualenvwrapper-win【-win 限于windows环境，linux不用】
+
+6.新建虚拟环境testvir2   mkvirtualenv testvir2
+
+7.查看当前的虚拟环境  workon
+
+8.进入test虚拟环境  workon test
+ 
+9.pytharm 中在settings中运行 展示http://127.0.0.1:8000/ 则ok
+
+10.pycharm运行django命令 tools下-run manage.py task 
+
+11.为了避免导入的麻烦可以将顶级的目录通过选中目录右键mark directory as设置为source root，之后import xxx即可
+
+12.下载myql-python  要确保python版本和下载版本一致 本次python版本3.6，对应下载3.6驱动
+访问地址：https://www.lfd.uci.edu/~gohlke/pythonlibs/#mysqlclient
+注意：虚拟环境和cmd下都要安装否则会报没有安装MySQLdb
+
+13.makemigrations 使用该命令生成数据表
+
+14.生成数据表的过程，使用migrate
+
+15.切记 安装的django  与mysql 版本尽量以最新的为主，避免执行报mysql version 或sql语法错误【先确定sql语法正确，另外mysql可以选择msi为主，方便安装】
+下载地址：https://dev.mysql.com/downloads/installer/5.6.html
+
+16.ctrl+ 鼠标左键 可以跟踪函数；；alt+左键  恢复
+
+14.html-form表单提交页面报csrf 安全验证的问题 如页面403，需要在</from>前面加上{% csrf_token %}
+
+15.取出数据库信息，在html中显示，在html中{{}} 如：value="{{ my_message.address }}"
+
+16.修改已有html中的信息如：value=" {%if my_message.name == 'test3' %}testhastest{% endif %}"
+
+17.也支持else用法，但是必须在if 和endif之间 如：value=" {%if not my_message.name == 'test3' %}testhastest{% else %}test3 not testing {% endif %}"
+
+18.也支持ifequal【需要传入两个参数进行对比】如：value=" {%ifequal my_message.name  'test3' %}testhastest{% else %}test3 not testing {% endifequal %}"
+
+19.也支持slice如：value=" {%ifequal my_message.name|slice:'5' 'test3q' %}testhastest{% else %}test3 not testing {% endifequal %}"【slice等于5输出testhastest，否则输出test3 not testing】
+
+20.urls配置如：url(r'^form/$',getform,name='go_form') 【在后面添加name，并在html中进行替换，避免页面较多，频繁修改】，对应的html配置页面修改为：<form action="{% url 'go_form' %}" method="post" class="smart-green">
+
+21.修改中文LANGUAGE_CODE = 'en-us'  改为'zh-hans' 并且USE_TZ = False 【值为false，访问的是本地时间，如果为true则为utc是国际时间】
+
+22.admin 登录hui+hui@hui.com+123456dj
+
+23.设置python模板，在settings中搜索template -找到file and code templates,找到对应的模板进行编辑
+
+24.输写的格式为 __date__="$DATE $TIME“  or __author__="hui"
+
+25.xadmin邮箱验证码 标题 EmailVerifyRecord object 【在users-models增加    def __str__(self):
+        return '{0}({1})'.format(self.code, self.email)】
+
+26.导入模块的时候，避免空格如：from  .models import Courses,Lessoin,Video,CourseResource【在点后面有空格，则课程模块不能加载成功】
+
+27.通过源码安装下admin【访问github搜索xadmin源码，clone 或者download下来，粘贴到项目的根目录，之后最好新建一个extra_apps把xadmin拖拽到这里，通过鼠标右键选择mark directory as 实现sourceroot】
+
+28.
+
+
+
+
+————————————————————————————————————————————————
+
+
+【django創建項目流程】
+
+1.創建虛擬環境 mkvirtualenv xxx 
+2.安裝對於的mysql驅動  cd 進入驅動路徑，pip install mysqlclient xxx ,注意版本要一致，如python3.6 安裝36的
+3.新建pycharm 項目 命名django 名稱，base interperter 選擇對應的虛擬環境 python.exe 文件
+4.配置項目包下settings ，數據庫配置包括 ENGINE,NAME,USER,PASSWORD,HOST
+5.使用navicat 創建新數據庫，選擇utf8 Unicode ；collation默認選擇第一個
+6.pycharm -tools下run manage.py task
+7.生成數據表 先執行makemigrations  再執行  migrate，創建成功后，refresh 即可
+8.創建app 在tools下manage.py  執行startapp users ，其中users 為app名字
+9.創建后app，第一步創建app下的 models
+10. 在models 下自定義UserProfile 類，包括nick_name,birday,等
+class UserProfile(AbstractUser): #必須繼承AbstractUser
+    nick_name=models.CharField(max_length=50,verbose_name="昵稱",default="")
+    birday=models.DateField(verbose_name="生日",null=True,blank=True)
+    gender=models.CharField(choices=(("male","男"),("female","女")),default="female")
+    address=models.CharField(max_length=100,default="")
+    mobile=models.CharField(max_length=11,null=True,blank=True)
+    image=models.ImageField(upload_to="image/%Y%m",default="image/default.png",max_length=100)
+
+11.之後要寫class Meta 類
+    class Meta:
+        verbose_name="用戶信息"
+        verbose_name_plural=verbose_name
+12.還要重載unicode方法
+    def __str__(self):
+        return self.username
+13.在項目的settings 中注冊users app
+14.在tools 下manage.py  鍵入makemigrations   users ，再 執行migrate users
+15.如在執行提示依賴 pip install Pillow  在同級的虛擬環境下 執行該命令進行安裝
+16.
